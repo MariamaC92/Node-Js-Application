@@ -49,6 +49,15 @@ router.put("/api/:id", async (req, res) => {
     }
 })
 
+router.delete("/api/:id", async (req, res) => {
+    const {id} = req.params;
+    try {
+        const {rows} = await pool.query("DELETE FROM users WHERE id = $1", [id]);
+        res.send({message: `user with id ${id} deleted`})
+    } catch (err){ 
+        res.sendStatus(400);
+    }
+})
 
 
 
