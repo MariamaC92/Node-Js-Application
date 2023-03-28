@@ -38,6 +38,19 @@ router.post("/", async (req, res) => {
     }
 })
 
+router.put("/api/:id", async (req, res) => {
+    const {id} = req.params;
+    const {firstname} = req.body;
+    try {
+        const {rows} = await pool.query("UPDATE users SET first_name= $1 WHERE id=$2 RETURNING *", [firstname, id] );
+        res.json({data: rows});
+    } catch {
+        res.sendStatus(404);
+    }
+})
+
+
+
 
 
 module.exports = router;
