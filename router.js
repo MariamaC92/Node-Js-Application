@@ -73,6 +73,24 @@ router.get("/orders",async (req, res) => {
     }
 })
 
+router.get("/orders/:id", async (req, res) => {
+    try {
+        const {id} = req.params;
+        const {rows} = await pool.query("SELECT * FROM orders WHERE id=$1", [id])
+        res.send({data: rows});
+    } catch(err) {
+        res.sendStatus(500);
+    }
+})
+
+router.post("/orders", async (req, res) => {
+    try{
+        const { price, date, user_id } = req.body;
+        const {rows} = await pool.query("INSERT INTO orders (price, date, user_id) VALUES ($1, $2,$3) RETURNING *" [price, date, user_id])
+        res.json({data: rows});
+    } catch (err){ res.sendStatus(404)}
+})
+
 
 
 
