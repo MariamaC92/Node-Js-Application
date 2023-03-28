@@ -28,6 +28,16 @@ router.get("/api/:id", async (req,res) => {
         res.sendStatus(500);}
 })
 
+router.post("/", async (req, res) => {
+    const {firstname, lastname, age} = req.body;
+    try {
+        const {rows} = await pool.query("INSERT INTO users (first_name, last_name, age) VALUES ($1, $2, $3) RETURNING *", [firstname, lastname, age]);
+        res.send({data: rows});
+    } catch(err) {
+        res.sendStatus(400);
+    }
+})
+
 
 
 module.exports = router;
