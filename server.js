@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.set("/api", router)
+app.use("/api", router)
 
 
 

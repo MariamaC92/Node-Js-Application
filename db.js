@@ -1,4 +1,4 @@
-const {pool} = require("pg");
+const {Pool} = require("pg");
 const {PGUSER, PGHOST, PGDATABASE, PGPASSWORD, PGPORT} = process.env
 
 const pool = new Pool({
