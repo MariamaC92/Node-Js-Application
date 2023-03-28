@@ -2,6 +2,9 @@ const {Router} = require("express")
 const router = Router();
 const pool = require("./db")
 
+
+// users 
+
 router.get("/", async (req, res) => {
  try {
     const {rows} = await pool.query("SELECT * from users");
@@ -17,7 +20,7 @@ catch (err) {
    
 });
 
-router.get("/api/:id", async (req,res) => {
+router.get("/user/:id", async (req,res) => {
     const {id} = req.params;
     try {
         const {rows} = await pool.query ("SELECT * FROM users WHERE id=$1;", [id]);
@@ -28,7 +31,7 @@ router.get("/api/:id", async (req,res) => {
         res.sendStatus(500);}
 })
 
-router.post("/", async (req, res) => {
+router.post("/users", async (req, res) => {
     const {firstname, lastname, age} = req.body;
     try {
         const {rows} = await pool.query("INSERT INTO users (first_name, last_name, age) VALUES ($1, $2, $3) RETURNING *", [firstname, lastname, age]);
@@ -38,7 +41,7 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.put("/api/:id", async (req, res) => {
+router.put("/users/:id", async (req, res) => {
     const {id} = req.params;
     const {firstname} = req.body;
     try {
@@ -49,13 +52,24 @@ router.put("/api/:id", async (req, res) => {
     }
 })
 
-router.delete("/api/:id", async (req, res) => {
+router.delete("/users/:id", async (req, res) => {
     const {id} = req.params;
     try {
         const {rows} = await pool.query("DELETE FROM users WHERE id = $1", [id]);
         res.send({message: `user with id ${id} deleted`})
     } catch (err){ 
         res.sendStatus(400);
+    }
+})
+
+// orders
+
+router.get("/orders",async (req, res) => {
+    try{
+        const {rows} = await pool.query("SELECT * FROM orders")
+        res.json({data: rows});
+    } catch {
+        res.sendStatus(404);
     }
 })
 
